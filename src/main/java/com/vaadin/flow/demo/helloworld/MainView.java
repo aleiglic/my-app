@@ -27,6 +27,7 @@ public class MainView extends VerticalLayout {
 		filterText.setPlaceholder("Filter by name...");
 		filterText.setValueChangeMode(ValueChangeMode.EAGER);
 		filterText.addValueChangeListener(e -> updateList());
+		filterText.setHeight("3vh");
 		Button clearFilterTextBtn = 
 				new Button(new Icon(VaadinIcon.CLOSE_CIRCLE));
 		clearFilterTextBtn.addClickListener(e -> filterText.clear());
@@ -37,7 +38,7 @@ public class MainView extends VerticalLayout {
 		main.setAlignItems(Alignment.START);
 		main.setSizeFull();
 
-		add(filtering, main);
+		
 
 		grid.setSizeFull();
 
@@ -48,6 +49,19 @@ public class MainView extends VerticalLayout {
 		add(grid);
 		setHeight("100vh");
 		updateList();
+		
+		grid.asSingleSelect().addValueChangeListener(event -> {
+		    form.setCustomer(event.getValue());
+		});
+		
+		Button addCustomerBtn = new Button("Add new customer");
+		addCustomerBtn.addClickListener(e -> {
+		    grid.asSingleSelect().clear();
+		    form.setCustomer(new Customer());
+		});
+		HorizontalLayout toolbar = new HorizontalLayout(filtering,
+			    addCustomerBtn);
+		add(toolbar, main);
 	}
 
 	public void updateList() {
